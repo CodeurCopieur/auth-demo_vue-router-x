@@ -1,7 +1,7 @@
 <template>
 <div class="bg-gray-200 flex content-center justify-center items-center h-full">
   <div class="w-full max-w-lg">
-    <div class="bg-white shadow-md rounded px-8 py-8 mb-4">
+    <div class="bg-white shadow-md rounded-2xl px-8 py-8 mb-4">
       <h1 class="text-2xl font-bold text-gray-800 mb-6" v-if="mode == 'login'">Connexion</h1>
       <h1 class="text-2xl font-bold text-gray-800 mb-6" v-else>Se connecter</h1>
       <p class="text-base text-stone-500" v-if="mode == 'login'">Tu n'as pas encore de compte ? <span class="text-sky-600 underline cursor-pointer" @click="switchToCreateAccount()">Créer un compte</span></p>
@@ -32,13 +32,17 @@
           <button 
             v-if="mode == 'login'"
             @click="login()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            :class="{'cursor-not-allowed': !validateFields}"
+            type="button">
             Connexion
           </button>
           <button 
             v-else
             @click="createAccount()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            :class="{'cursor-not-allowed': !validateFields}"
+            type="button">
             Créer mon compte
           </button>
         </div>
@@ -61,6 +65,23 @@
         password: '',
       }
     },
+    computed: {
+      validateFields() {
+        if(this.mode = 'create') {
+          if (this.email != "" && this.prenom != "" && this.nom != "" && this.password != "") {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+           if (this.email != "" && this.password != "") {
+             return true;
+          } else {
+            return false;
+          }
+        }
+      }
+    },
     methods: {
       switchToCreateAccount() {
         this.mode = 'create';
@@ -72,7 +93,8 @@
 
       },
       createAccount() {
-
+        console.log(this.email, this.prenom, this.nom, this.password);
+        this.$store.dispatch('createAccount', {email: this.email, prenom: this.prenom, nom: this.nom, password: this.password})
       }
     }
   }
