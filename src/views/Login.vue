@@ -14,10 +14,10 @@
 
         <div class="flex flex-wrap -mx-3 mb-6" v-if="mode == 'create'">
           <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <input v-model="prenom" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Prenom">
+            <input v-model="name.prenom" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="Prenom">
           </div>
           <div class="w-full md:w-1/2 px-3">
-            <input v-model="nom" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="Nom">
+            <input v-model="name.nom" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="Nom">
           </div>
         </div>
 
@@ -60,15 +60,18 @@
       return {
         mode: 'login',
         email: '',
-        prenom: '',
-        nom: '',
+        username: '',
+        name: {
+          nom: '',
+          prenom: '',
+        },
         password: '',
       }
     },
     computed: {
       validateFields() {
         if(this.mode = 'create') {
-          if (this.email != "" && this.prenom != "" && this.nom != "" && this.password != "") {
+          if (this.email != "" && this.name.prenom != "" && this.name.nom != "" && this.password != "") {
             return true;
           } else {
             return false;
@@ -93,8 +96,8 @@
 
       },
       createAccount() {
-        console.log(this.email, this.prenom, this.nom, this.password);
-        this.$store.dispatch('createAccount', {email: this.email, prenom: this.prenom, nom: this.nom, password: this.password})
+        console.log(this.email, this.name.prenom, this.name.nom, this.password);
+        this.$store.dispatch('createAccount', {email: this.email, username: this.name.prenom, password: this.password, prenom: this.name.prenom, nom: this.name.nom})
       }
     }
   }
